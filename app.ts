@@ -1,5 +1,6 @@
 import express, { json } from 'express';
-import {getWeather} from './API'
+import {getWeather} from './API';
+
 
 
 const makeApp = (createExercise: any , getAllExercises: any, getExerciseById: any) => {
