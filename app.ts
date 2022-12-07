@@ -21,7 +21,7 @@ const makeApp = (createExercise: any , getAllExercises: any, getExerciseById: an
     app.get('/exercise/:id', async (req, res) => {
             const exercise = await getExerciseById(req.params.id)
             console.log('exercise by Id ', exercise)
-        if (!exercise) {
+        if (!exercise.startTime) {
             res.status(404).send();
         } else {
             const weatherAPI = await getWeather()

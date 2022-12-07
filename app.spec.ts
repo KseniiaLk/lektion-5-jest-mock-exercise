@@ -48,12 +48,17 @@ beforeEach(() => {
 describe("GET /exercise/:id", () => {
 
     it("should return 404 if invalid mongo id is provided", async () => {
-        const response = await request(app).get("/exercise/hejhej");
+        const response = await request(app).get('/exercise/hejhej');
         expect(response.statusCode).toBe(404);
     })
+
+})
+
+describe("GET /exercise/:id", () => {
     it('should call getExercisesById when a get req to /exercise/:id is made', async () => {
         const response = await request(app).get('/exercise/63904fb9a480b88bbba9eed7')
         expect(getExerciseById).toHaveBeenCalled()
+        // console.log('Response är: ', response.temperature)
         expect(response.body.temperature).toBe(25.6)
     })
 })
