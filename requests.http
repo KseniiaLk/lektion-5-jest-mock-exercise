@@ -13,4 +13,8 @@ GET http://localhost:8080/exercise
 
 ###
 
-GET http://localhost:8080/exercise/638f13552a1120c75b4079d0
+GET http://localhost:8080/exercise/63904fb9a480b88bbba9eed7
+
+###
+
+GET http://localhost:8080/exercise/bajs

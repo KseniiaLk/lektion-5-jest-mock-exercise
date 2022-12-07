@@ -13,11 +13,14 @@ const makeApp = (createExercise: any , getAllExercises: any, getExerciseById: an
     });
 
     app.get('/exercise', async (req, res) => {
-        res.json(getAllExercises);
+        const response = await getAllExercises();
+        console.log('getAllExercises: ', response)
+        res.json(response)
     });
 
     app.get('/exercise/:id', async (req, res) => {
-        const exercise = await getExerciseById(req.params.id)
+            const exercise = await getExerciseById(req.params.id)
+            console.log('exercise by Id ', exercise)
         if (!exercise) {
             res.status(404).send();
         } else {

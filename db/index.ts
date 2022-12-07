@@ -19,10 +19,16 @@ export const createExercise = (exercise: IExercise) => {
    return new ExerciseModel(exercise);
 }
 export const getAllExercises = async () => {
-   return await ExerciseModel.find({})
+   const returnValue = await ExerciseModel.find({})
+   return returnValue
 }
-export const getExerciseById= (id: string) => {
-   return ExerciseModel.findById(id);
+export const getExerciseById = async (id: string) => {
+   try{
+      const resp = await ExerciseModel.findById(id);
+      return resp
+   }catch(err){
+      return err
+   }
 }
 
 
