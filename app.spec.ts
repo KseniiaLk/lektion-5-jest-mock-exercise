@@ -12,6 +12,7 @@ const validExercise = {
     durationInSeconds: 5,
     activityType: "running"
 }
+
 beforeEach(() => {
 
     createExercise.mockReset();
@@ -24,10 +25,10 @@ beforeEach(() => {
     })
 
     getExerciseById.mockResolvedValue({
-        "startTime": "2017-01-01T10:50:00.000Z",
-        "durationInSeconds": 360,
-        "activityType": "running",
-        "temperature": 25.6
+        // startTime: "2017-01-01T10:50:00.000Z",
+        // durationInSeconds: 360,
+        // activityType: "running",
+        // temperature: 25.6
     })
     getAllExercises.mockResolvedValue([{
     _id: "63904fada480b88bbba9eed5",
@@ -45,16 +46,18 @@ beforeEach(() => {
         }])
 })
 
+
 describe("GET /exercise/:id", () => {
 
+    it("should return 400 if invalid mongo id is provided", async () => {
+        const response = await request(app).get("/exercise/fågel");
+        expect(response.statusCode).toBe(400);
+    })
     it("should return 404 if invalid mongo id is provided", async () => {
-        const response = await request(app).get('/exercise/hejhej');
+        const response = await request(app).get("/exercise/63504bf9a480b88bbba9eed7");
+        console.log(response)
         expect(response.statusCode).toBe(404);
     })
-
-})
-
-describe("GET /exercise/:id", () => {
     it('should call getExercisesById when a get req to /exercise/:id is made', async () => {
         const response = await request(app).get('/exercise/63904fb9a480b88bbba9eed7')
         expect(getExerciseById).toHaveBeenCalled()

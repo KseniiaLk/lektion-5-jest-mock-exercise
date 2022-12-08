@@ -1,5 +1,6 @@
 import express, { json } from 'express';
 import {getWeather} from './API';
+import { isValidId } from './db';
 
 
 
@@ -19,13 +20,16 @@ const makeApp = (createExercise: any , getAllExercises: any, getExerciseById: an
     });
 
     app.get('/exercise/:id', async (req, res) => {
+        if (!isValidId(req.params.id)) {
+            res.status(400).send();
+        }else {
             const exercise = await getExerciseById(req.params.id)
-            console.log('exercise by Id ', exercise)
-        if (!exercise.startTime) {
-            res.status(404).send();
+         if (!exercise) {
+                    res.status(404).send();
         } else {
             const weatherAPI = await getWeather()
             res.json({ startTime: exercise.startTime, durationInSeconds: exercise.durationInSeconds, activityType: exercise.activityType, temperature: weatherAPI.data.daily.temperature_2m_max[0] });
+        }
         }
     });
     return app

@@ -31,5 +31,6 @@ export const getExerciseById = async (id: string) => {
    }
 }
 
+export const isValidId = (id: string) => mongoose.Types.ObjectId.isValid(id);
 
 // export default { createExercise, getAllExercises, getExerciseById }
