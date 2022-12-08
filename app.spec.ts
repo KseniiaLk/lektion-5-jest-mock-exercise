@@ -46,16 +46,26 @@ beforeEach(() => {
     _id: "63904fada480b88bbba9eed5",
     startTime: "2017-01-01T10:50:00.000Z",
     durationInSeconds: 360,
-    activityType: "running",
+    activityType: "runninggg",
     __v: 0
     },
     {
         _id: "638f13552a1120c75b4079d0",
         startTime: "2017-01-01T10:50:00.000Z",
         durationInSeconds: 360,
-        activityType: "running",
+        activityType: "walking",
         __v: 0
         }])
+})
+
+
+describe("GET /exercise/", () => {
+    it('should call getAllExercises when a get req to /exercise/is made', async () => {
+        const response = await request(app).get('/exercise/')
+        console.log('Get all exercises är: ', response)
+        expect(getAllExercises).toHaveBeenCalled()
+        expect(response.body[0].activityType).toBe("runninggg")
+    })
 })
 
 
