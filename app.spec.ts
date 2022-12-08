@@ -6,7 +6,11 @@ const getAllExercises = jest.fn()
 const getExerciseById = jest.fn()
 const createExercise = jest.fn()
 
+// test('async test', async () => {
+//     const asyncMock = jest.fn<() => Promise<string>>()
+
 const app = makeApp(createExercise, getAllExercises, getExerciseById);
+
 const validExercise = {
     startTime: "2022-12-06",
     durationInSeconds: 5,
@@ -24,12 +28,16 @@ beforeEach(() => {
         __v: 0
     })
 
-    getExerciseById.mockResolvedValue({
-        // startTime: "2017-01-01T10:50:00.000Z",
-        // durationInSeconds: 360,
-        // activityType: "running",
+    getExerciseById
+    .mockResolvedValue({
+        startTime: "2017-01-01T10:50:00.000Z",
+        durationInSeconds: 360,
+        activityType: "running",
         // temperature: 25.6
     })
+    // .mockRejectedValueOnce(undefined)
+    // .mockRejectedValueOnce(undefined)
+
     getAllExercises.mockResolvedValue([{
     _id: "63904fada480b88bbba9eed5",
     startTime: "2017-01-01T10:50:00.000Z",
@@ -53,15 +61,10 @@ describe("GET /exercise/:id", () => {
         const response = await request(app).get("/exercise/fågel");
         expect(response.statusCode).toBe(400);
     })
-    it("should return 404 if invalid mongo id is provided", async () => {
-        const response = await request(app).get("/exercise/63504bf9a480b88bbba9eed7");
-        console.log(response)
-        expect(response.statusCode).toBe(404);
-    })
     it('should call getExercisesById when a get req to /exercise/:id is made', async () => {
         const response = await request(app).get('/exercise/63904fb9a480b88bbba9eed7')
         expect(getExerciseById).toHaveBeenCalled()
-        // console.log('Response är: ', response.temperature)
+        console.log(response)
         expect(response.body.temperature).toBe(25.6)
     })
 })

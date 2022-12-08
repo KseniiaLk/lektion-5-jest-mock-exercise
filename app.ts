@@ -24,12 +24,9 @@ const makeApp = (createExercise: any , getAllExercises: any, getExerciseById: an
             res.status(400).send();
         }else {
             const exercise = await getExerciseById(req.params.id)
-         if (!exercise) {
-                    res.status(404).send();
-        } else {
             const weatherAPI = await getWeather()
             res.json({ startTime: exercise.startTime, durationInSeconds: exercise.durationInSeconds, activityType: exercise.activityType, temperature: weatherAPI.data.daily.temperature_2m_max[0] });
-        }
+        // }
         }
     });
     return app
