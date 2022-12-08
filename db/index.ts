@@ -16,7 +16,7 @@ const exerciseSchema = new mongoose.Schema<IExercise>({
 const ExerciseModel = mongoose.model("exercise", exerciseSchema);
 
 export const createExercise = (exercise: IExercise) => {
-   return new ExerciseModel(exercise);
+   return (new ExerciseModel(exercise)).save();
 }
 export const getAllExercises = async () => {
    const returnValue = await ExerciseModel.find({})
@@ -31,6 +31,25 @@ export const getExerciseById = async (id: string) => {
    }
 }
 
+type ExerciseType = {
+   startTime: string,
+   durationInSeconds: number,
+   activityType: string
+}
+
 export const isValidId = (id: string) => mongoose.Types.ObjectId.isValid(id);
+export const isValidExercise = (exercise: ExerciseType) => {
+   let errors = []
+   if(!exercise.startTime){
+      errors.push('exercise needs a starttime')
+   }
+   if(!exercise.durationInSeconds){
+      errors.push('exercise needs a duration (in seconds)')
+   }
+   if(!exercise.activityType){
+      errors.push('exercise needs an activityType')
+   }
+   return errors
+}
 
 // export default { createExercise, getAllExercises, getExerciseById }

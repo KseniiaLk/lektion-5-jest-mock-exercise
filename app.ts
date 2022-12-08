@@ -1,6 +1,7 @@
 import express, { json } from 'express';
 import {getWeather} from './API';
-import { isValidId } from './db';
+import { isValidId, isValidExercise } from './db';
+
 
 
 
@@ -8,9 +9,12 @@ const makeApp = (createExercise: any , getAllExercises: any, getExerciseById: an
     const app = express();
     app.use(json());
     app.post('/exercise', async (req, res) => {
-        const exercise = createExercise(req.body)
-        //  new ExerciseModel(req.body);
-        res.json(await exercise.save());
+        if(isValidExercise(req.body).length){
+            res.status(400).send()
+        }else{
+            const exercise = await createExercise(req.body)
+            res.json(exercise);
+        }
     });
 
     app.get('/exercise', async (req, res) => {

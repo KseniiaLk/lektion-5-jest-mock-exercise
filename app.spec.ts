@@ -2,6 +2,7 @@ import { default as request } from 'supertest';
 import makeApp from './app'
 import nock from 'nock'
 
+
 const getAllExercises = jest.fn()
 const getExerciseById = jest.fn()
 const createExercise = jest.fn()
@@ -16,6 +17,9 @@ const validExercise = {
     durationInSeconds: 5,
     activityType: "running"
 }
+//https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&start_date=2022-06-08&end_date=2022-06-08&daily=temperature_2m_max&timezone=GMT
+
+
 
 beforeEach(() => {
 
@@ -55,7 +59,27 @@ beforeEach(() => {
 })
 
 
+describe("POST /exercise", () => {
+    it("should return status 200 after posting an exercise", async () => {
+       const response = await request(app).post('/exercise').send(validExercise)
+    })
+    it("Should return an error if Exercise data is invalid", async () => {
+        const response = await request(app).post('/exercise').send('INVALIDvalidExercise')
+        expect(response.statusCode).toBe(400)
+    })
+})
+
 describe("GET /exercise/:id", () => {
+
+    beforeAll(() => {
+        nock('https://api.open-meteo.com')
+            .get('/v1/forecast?latitude=52.52&longitude=13.41&start_date=2022-06-08&end_date=2022-06-08&daily=temperature_2m_max&timezone=GMT')
+            .reply(200, {
+                daily: {
+                    temperature_2m_max: [800]
+                }
+            })
+    })
 
     it("should return 400 if invalid mongo id is provided", async () => {
         const response = await request(app).get("/exercise/fågel");
@@ -64,7 +88,6 @@ describe("GET /exercise/:id", () => {
     it('should call getExercisesById when a get req to /exercise/:id is made', async () => {
         const response = await request(app).get('/exercise/63904fb9a480b88bbba9eed7')
         expect(getExerciseById).toHaveBeenCalled()
-        console.log(response)
-        expect(response.body.temperature).toBe(25.6)
+        expect(response.body.temperature).toBe(800)
     })
 })
